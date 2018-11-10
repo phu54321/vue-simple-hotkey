@@ -38,7 +38,7 @@ describe('span hotkey', () => {
     expect(wrapper.find('span').text()).to.equal('1')
   })
 
-  it('should not respond to other keys', async () => {
+  it('should respond to other hotkeys', async () => {
     const wrapper = mount(SpanClickVue, { attachToDocument: true })
 
     expect(wrapper.find('span').text()).to.equal('0')

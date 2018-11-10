@@ -6,17 +6,31 @@ export default async function keypress (element, keystroke) {
   const $el = $(element)
   const keys = keystroke.split('+')
     .map(k => k.toUpperCase())
-    .map(k => keymap[k])
+
+  const specialKeys = ['CTRL', 'ALT', 'SHIFT']
+  let ctrlPressed = (keys.indexOf('CTRL') !== -1)
+  let altPressed = (keys.indexOf('ALT') !== -1)
+  let shiftPressed = (keys.indexOf('SHIFT') !== -1)
 
   function dispatchKeyboardEvent (eventType, keys) {
-    for (const k of keys) {
-      $el.trigger({ type: eventType, which: k, keyCode: k })
+    for (const key of keys) {
+      if (specialKeys.indexOf(key) !== -1) continue
+
+      const keyCode = keymap[key]
+      if (keyCode === undefined) {
+        console.warn('Unknown key ' + key)
+        continue
+      }
+      $el.trigger({
+        type: eventType,
+        which: keyCode,
+        keyCode,
+        shiftKey: shiftPressed,
+        ctrlKey: ctrlPressed,
+        altKey: altPressed
+      })
     }
   }
-
-  $(document).on('keydown', e => {
-    console.log(e.keyCode)
-  })
 
   dispatchKeyboardEvent('keydown', keys)
   dispatchKeyboardEvent('keypress', keys)
