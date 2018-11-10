@@ -5,6 +5,8 @@ import VueSimpleHotkey from '../../src/index'
 import Vue from 'vue'
 import keypress from '../utils/keypress'
 
+import $ from 'jquery'
+
 const SpanClickVue = {
   template: `
   <div>
@@ -19,21 +21,22 @@ const SpanClickVue = {
   }
 }
 
+Vue.use(VueSimpleHotkey)
+
 describe('ignore keystroke inside input elements', () => {
-  beforeEach(() => {
-    Vue.use(VueSimpleHotkey)
+  afterEach(() => {
+    $('input').blur()
   })
 
   it('should respond to other hotkeys', async () => {
     const wrapper = mount(SpanClickVue, { attachToDocument: true })
-
     const inputEl = wrapper.find('input').element
     inputEl.focus()
-    await keypress(inputEl, 'space')
+    await keypress('space')
     expect(wrapper.find('span').text()).to.equal('0')
 
-    window.blur()
-    await keypress(document.body, 'space')
+    inputEl.blur()
+    await keypress('space')
     expect(wrapper.find('span').text()).to.equal('1')
   })
 })

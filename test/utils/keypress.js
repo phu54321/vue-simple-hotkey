@@ -2,8 +2,8 @@ import sleep from './sleep'
 import keymap from './keymap'
 import $ from 'jquery'
 
-export default async function keypress (element, keystroke) {
-  const $el = $(element)
+export default async function keypress (keystroke) {
+  const $el = $(document.activeElement)
   const keys = keystroke.split('+')
     .map(k => k.toUpperCase())
 

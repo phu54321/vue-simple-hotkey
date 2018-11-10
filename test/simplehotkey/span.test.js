@@ -34,15 +34,19 @@ describe('span hotkey', () => {
     const wrapper = mount(SpanClickVue, { attachToDocument: true })
 
     expect(wrapper.find('span').text()).to.equal('0')
-    await keypress(document.body, 'space')
+    await keypress('space')
     expect(wrapper.find('span').text()).to.equal('1')
+
+    wrapper.destroy()
   })
 
   it('should respond to other hotkeys', async () => {
     const wrapper = mount(SpanClickVue, { attachToDocument: true })
 
     expect(wrapper.find('span').text()).to.equal('0')
-    await keypress(document.body, 'enter')
+    await keypress('enter')
     expect(wrapper.find('span').text()).to.equal('0')
+
+    wrapper.destroy()
   })
 })
