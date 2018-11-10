@@ -10,6 +10,9 @@ Object.assign(config, {
     filename: 'index.js',
     libraryTarget: 'commonjs2'
   },
+  externals: {
+    jquery: 'jQuery'
+  },
   devtool: '#source-map',
   plugins: [
     new webpack.DefinePlugin({
