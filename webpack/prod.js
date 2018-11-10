@@ -11,7 +11,7 @@ Object.assign(config, {
     libraryTarget: 'commonjs2'
   },
   externals: {
-    jquery: 'jQuery'
+    jquery: 'jquery'
   },
   devtool: '#source-map',
   plugins: [

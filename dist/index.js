@@ -71,7 +71,7 @@ module.exports =
 /* 0 */
 /***/ (function(module, exports) {
 
-module.exports = require("jQuery");
+module.exports = require("jquery");
 
 /***/ }),
 /* 1 */

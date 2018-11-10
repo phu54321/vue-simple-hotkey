@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 import { mount, shallowMount } from '@vue/test-utils'
 
-import VueSimpleHotkey from '../../src/index'
+import VueSimpleHotkey from '../../dist'
 import Vue from 'vue'
 import keypress from '../utils/keypress'
 
