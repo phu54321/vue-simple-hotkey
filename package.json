@@ -1,0 +1,19 @@
+{
+  "name": "vue-simple-hotkey",
+  "version": "1.0.0",
+  "description": "Simple hotkey plugin for vue.js",
+  "dependencies": {
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "jquery": "^3.3.1",
+    "vue": "^2.5.17"
+  },
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-standard": "^12.0.0"
+  },
+  "author": "Hyun Woo Park (phu54321@naver.com)",
+  "license": "MIT"
+}
