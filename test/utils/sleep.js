@@ -1,7 +1,13 @@
+import Vue from 'vue'
+
 export default function (duration = 100) {
   return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve()
-    }, duration)
+    if (duration) {
+      setTimeout(() => {
+        resolve()
+      }, duration)
+    } else {
+      Vue.nextTick(resolve)
+    }
   })
 }
