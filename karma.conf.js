@@ -7,13 +7,14 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     browsers: ['ChromeHeadless'],
-    autoWatch: false,
-    singleRun: true,
     concurrency: Infinity,
 
-    files: ['test/**/*.test.js'],
+    files: [
+      'node_modules/@babel/polyfill/dist/polyfill.js',
+      'test/**/*.test.js'
+    ],
     preprocessors: {
-      'test/**/*.test.js': ['webpack']
+      'test/**/*.test.js': ['webpack', 'sourcemap']
     },
 
     webpack: webpackConfig,

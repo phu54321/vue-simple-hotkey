@@ -12,9 +12,10 @@ module.exports = {
       }
     ]
   },
+  devtool: 'inline-source-map',
   resolve: {
     alias: {
-      '@': 'src/'
+      '@': 'src'
     }
   }
 }
