@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-export default function (duration = 100) {
+export default function (duration) {
   return new Promise((resolve) => {
     if (duration) {
       setTimeout(() => {
