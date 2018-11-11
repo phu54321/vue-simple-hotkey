@@ -2,6 +2,10 @@
 
 Simple hotkey module for vue.js.
 
+![minified size](https://img.shields.io/bundlephobia/min/vue-simple-hotkey.svg)
+![license](https://img.shields.io/npm/l/vue-simple-hotkey.svg)
+![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)
+
 ## Usage
 
 Install with:
