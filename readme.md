@@ -98,7 +98,7 @@ You may want to register hotkey to some nested DOM.
 
 When you're registering hotkey on such DOM, the **child on top of the center of parent's boundary box** will be clicked instead.
 
-![Center of the element is clicked](readme_asset/nested_dom_resolution.png)
+![Center of the element is clicked](https://github.com/phu54321/vue-simple-hotkey/raw/master/readme_asset/nested_dom_resolution.png)
 
 The event is bubbling, so you may give click event handler to either parent or child. Things will somehow just work.
 
@@ -108,4 +108,4 @@ This mechanism won't work if some other non-child is overlaying over center poin
 
 When multiple elements registeres the same hotkey, the element with the closest common ancestor is selected. For instance, in a case like below image, the upper red element is triggered.
 
-![Multiple element with same hotkey](readme_asset/rule_common_ancestor.png)
+![Multiple element with same hotkey](https://github.com/phu54321/vue-simple-hotkey/raw/master/readme_asset/rule_common_ancestor.png)

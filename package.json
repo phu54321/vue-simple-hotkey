@@ -1,6 +1,6 @@
 {
   "name": "vue-simple-hotkey",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Simple hotkey plugin for vue.js",
   "author": "Hyun Woo Park (phu54321@naver.com)",
   "license": "MIT",
