@@ -1,6 +1,6 @@
 {
   "name": "vue-simple-hotkey",
-  "version": "1.0.0",
+  "version": "0.1.1",
   "description": "Simple hotkey plugin for vue.js",
   "author": "Hyun Woo Park (phu54321@naver.com)",
   "license": "MIT",
@@ -29,11 +29,10 @@
     "test": "karma start"
   },
   "main": "dist/index.js",
-  "dependencies": {
-    "@babel/polyfill": "^7.0.0",
-    "@vue/test-utils": "^1.0.0-beta.25"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@vue/test-utils": "^1.0.0-beta.25",
+    "@babel/polyfill": "^7.0.0",
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.5",
     "@babel/preset-env": "^7.1.5",
