@@ -11,7 +11,7 @@ Simple hotkey module for vue.js.
 Install with:
 
 ```
-npm i vue-simple-hotkey
+npm i jquery vue-simple-hotkey
 ```
 
 Activate with:
