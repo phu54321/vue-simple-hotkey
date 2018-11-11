@@ -95,7 +95,8 @@ function resolveHotkey (kString, activeElement) {
         matchedElementIndex = elIndex
         break
       }
-      if (--maxHotkeyDepth === 0) break
+      if (maxHotkeyDepth === 0) break
+      maxHotkeyDepth--
     }
   }
 

@@ -511,7 +511,8 @@ function resolveHotkey(kString, activeElement) {
           break;
         }
 
-        if (--maxHotkeyDepth === 0) break;
+        if (maxHotkeyDepth === 0) break;
+        maxHotkeyDepth--;
       }
     }
   } catch (err) {
