@@ -82,6 +82,10 @@ module.exports = require("jquery");
 /* harmony export (immutable) */ __webpack_exports__["a"] = clickVNode;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+// Copyright (c) 2018 Hyun Woo Park
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 
 var defaultRule = {
   classRules: {
@@ -197,12 +201,15 @@ function isDescendant(child, parent) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-// This is a slightly modified version of jquery.hotkeys for
-// use with VueSimpleHotkeys.
-
 /* jslint browser: true */
 
 /* jslint jquery: true */
+// Copyright (c) 2018 Hyun Woo Park
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+// This is a slightly modified version of jquery.hotkeys for
+// use with VueSimpleHotkeys. Original license below.
 
 /*
  * $ Hotkeys Plugin
@@ -214,11 +221,6 @@ function isDescendant(child, parent) {
  *
  * Original idea by:
  * Binny V A, http://www.openjs.com/scripts/events/keyboard_shortcuts/
- */
-
-/*
- * One small change is: now keys are passed by object { keys: '...' }
- * Might be useful, when you want to pass some other data to your handler
  */
 
 
@@ -410,20 +412,10 @@ function _iterableToArrayLimit(arr, i) { var _arr = []; var _n = true; var _d = 
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-// Copyright (C) 2018 Hyun Woo Park
+// Copyright (c) 2018 Hyun Woo Park
 //
-// This program is free software: you can redistribute it and/or modify
-// it under the terms of the GNU Affero General Public License as
-// published by the Free Software Foundation, either version 3 of the
-// License, or (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU Affero General Public License for more details.
-//
-// You should have received a copy of the GNU Affero General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
 
 
 

@@ -1,9 +1,12 @@
 {
   "name": "vue-simple-hotkey",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Simple hotkey plugin for vue.js",
   "author": "Hyun Woo Park (phu54321@naver.com)",
   "license": "MIT",
+  "homepage": "https://github.com/phu54321/vue-simple-hotkey",
+  "url": "https://github.com/phu54321/vue-simple-hotkey/issues",
+  "email": "phu54321@naver.com",
   "lint-staged": {
     "linters": {
       "*.{js,vue}": [
