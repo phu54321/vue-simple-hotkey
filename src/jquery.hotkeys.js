@@ -1,9 +1,13 @@
-// This is a slightly modified version of jquery.hotkeys for
-// use with VueSimpleHotkeys.
-
 /* jslint browser: true */
 /* jslint jquery: true */
 
+// Copyright (c) 2018 Hyun Woo Park
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+// This is a slightly modified version of jquery.hotkeys for
+// use with VueSimpleHotkeys. Original license below.
 /*
  * $ Hotkeys Plugin
  * Copyright 2010, John Resig
@@ -14,11 +18,6 @@
  *
  * Original idea by:
  * Binny V A, http://www.openjs.com/scripts/events/keyboard_shortcuts/
- */
-
-/*
- * One small change is: now keys are passed by object { keys: '...' }
- * Might be useful, when you want to pass some other data to your handler
  */
 
 import $ from 'jquery';
