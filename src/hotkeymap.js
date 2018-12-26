@@ -3,41 +3,15 @@
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-import $ from 'jquery'
-import './jquery.hotkeys'
-import { clickVNode } from './clickElement'
+import { registerHotkeyHandler } from './jquery.hotkeys'
+import { createHotkeyDispatcher, getBackgroundElement, getEventDispatchOrigin } from './dispatch'
 
 const hotkeyHandlersMap = new Map()
-
-/**
- * Finds which element should be accounted for the origin of hotkey request.
- *
- * @param {HTMLElement?} eventTargetEl: Element the event has been dispatched
- */
-function getEventDispatchingElement (eventTargetEl) {
-  if (eventTargetEl === undefined) eventTargetEl = document.activeElement
-
-  if (eventTargetEl && eventTargetEl !== document.body) return eventTargetEl
-
-  // Support for bootstrap-vue: If current active model is
-  const modalDialogs = document.querySelectorAll('.modal.show')
-  if (modalDialogs.length === 1) return modalDialogs[0]
-
-  return document.body
-}
 
 export function addHotkeyToMap (kString, vnode, title, maxHotkeyDepth, packName) {
   if (!hotkeyHandlersMap.has(kString)) {
     hotkeyHandlersMap.set(kString, [])
-    $(document).bind('keydown', kString, (e) => {
-      const activeElement = getEventDispatchingElement(e.target)
-      const matchedHandler = resolveHotkey(kString, activeElement)
-      if (matchedHandler) {
-        e.stopPropagation()
-        e.preventDefault()
-        return clickVNode(matchedHandler.vnode)
-      }
-    })
+    registerHotkeyHandler(kString, createHotkeyDispatcher(kString))
   }
 
   // Remove any duplicate hotkeys that might exists
@@ -62,11 +36,12 @@ export function removeHotkeyFromMap (kString, targetEl) {
   handlerList.splice(index, 1)
 }
 
-export function resolveHotkey (kString, activeElement) {
+export function queryHotkeyHandler (kString, originElement) {
   const parentsFromActiveElement = []
-  for (let el = activeElement; el; el = el.parentElement) {
+  const backgroundElement = getBackgroundElement()
+  for (let el = originElement; el; el = el.parentElement) {
     parentsFromActiveElement.push(el)
-    if (el.classList.contains('modal') && el.classList.contains('show')) break
+    if (el === backgroundElement) break
   }
 
   const handlerList = hotkeyHandlersMap.get(kString)
@@ -75,7 +50,7 @@ export function resolveHotkey (kString, activeElement) {
 
   for (const handler of handlerList) {
     const { targetEl } = handler
-    let maxHotkeyDepth = handler.maxHotkeyDepth || 10000
+    let maxHotkeyDepth = handler.maxHotkeyDepth || Infinity
 
     for (let el = targetEl; el; el = el.parentElement) {
       const elIndex = parentsFromActiveElement.indexOf(el)
@@ -100,9 +75,9 @@ export function resolveHotkey (kString, activeElement) {
 export function getHotkeyMap (el) {
   const ret = {}
 
-  el = getEventDispatchingElement(el)
+  el = getEventDispatchOrigin(el)
   for (const kString of hotkeyHandlersMap.keys()) {
-    const handler = resolveHotkey(kString, el)
+    const handler = queryHotkeyHandler(kString, el)
     if (handler) {
       ret[kString] = handler
     }

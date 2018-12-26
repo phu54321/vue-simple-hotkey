@@ -80,48 +80,21 @@ module.exports = require("jquery");
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = addHotkeyToMap;
 /* harmony export (immutable) */ __webpack_exports__["b"] = removeHotkeyFromMap;
-/* unused harmony export resolveHotkey */
+/* harmony export (immutable) */ __webpack_exports__["c"] = queryHotkeyHandler;
 /* unused harmony export getHotkeyMap */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__jquery_hotkeys__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__clickElement__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__jquery_hotkeys__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__dispatch__ = __webpack_require__(2);
 // Copyright (c) 2018 Hyun Woo Park
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
 
-
 var hotkeyHandlersMap = new Map();
-/**
- * Finds which element should be accounted for the origin of hotkey request.
- *
- * @param {HTMLElement?} eventTargetEl: Element the event has been dispatched
- */
-
-function getEventDispatchingElement(eventTargetEl) {
-  if (eventTargetEl === undefined) eventTargetEl = document.activeElement;
-  if (eventTargetEl && eventTargetEl !== document.body) return eventTargetEl; // Support for bootstrap-vue: If current active model is
-
-  var modalDialogs = document.querySelectorAll('.modal.show');
-  if (modalDialogs.length === 1) return modalDialogs[0];
-  return document.body;
-}
-
 function addHotkeyToMap(kString, vnode, title, maxHotkeyDepth, packName) {
   if (!hotkeyHandlersMap.has(kString)) {
     hotkeyHandlersMap.set(kString, []);
-    __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).bind('keydown', kString, function (e) {
-      var activeElement = getEventDispatchingElement(e.target);
-      var matchedHandler = resolveHotkey(kString, activeElement);
-
-      if (matchedHandler) {
-        e.stopPropagation();
-        e.preventDefault();
-        return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_2__clickElement__["a" /* clickVNode */])(matchedHandler.vnode);
-      }
-    });
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__jquery_hotkeys__["a" /* registerHotkeyHandler */])(kString, __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__dispatch__["a" /* createHotkeyDispatcher */])(kString));
   } // Remove any duplicate hotkeys that might exists
 
 
@@ -145,12 +118,13 @@ function removeHotkeyFromMap(kString, targetEl) {
   if (index === -1) return;
   handlerList.splice(index, 1);
 }
-function resolveHotkey(kString, activeElement) {
+function queryHotkeyHandler(kString, originElement) {
   var parentsFromActiveElement = [];
+  var backgroundElement = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__dispatch__["b" /* getBackgroundElement */])();
 
-  for (var el = activeElement; el; el = el.parentElement) {
+  for (var el = originElement; el; el = el.parentElement) {
     parentsFromActiveElement.push(el);
-    if (el.classList.contains('modal') && el.classList.contains('show')) break;
+    if (el === backgroundElement) break;
   }
 
   var handlerList = hotkeyHandlersMap.get(kString);
@@ -164,7 +138,7 @@ function resolveHotkey(kString, activeElement) {
     for (var _iterator = handlerList[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var handler = _step.value;
       var targetEl = handler.targetEl;
-      var maxHotkeyDepth = handler.maxHotkeyDepth || 10000;
+      var maxHotkeyDepth = handler.maxHotkeyDepth || Infinity;
 
       for (var _el = targetEl; _el; _el = _el.parentElement) {
         var elIndex = parentsFromActiveElement.indexOf(_el);
@@ -203,7 +177,7 @@ function resolveHotkey(kString, activeElement) {
 
 function getHotkeyMap(el) {
   var ret = {};
-  el = getEventDispatchingElement(el);
+  el = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__dispatch__["c" /* getEventDispatchOrigin */])(el);
   var _iteratorNormalCompletion2 = true;
   var _didIteratorError2 = false;
   var _iteratorError2 = undefined;
@@ -211,7 +185,7 @@ function getHotkeyMap(el) {
   try {
     for (var _iterator2 = hotkeyHandlersMap.keys()[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
       var kString = _step2.value;
-      var handler = resolveHotkey(kString, el);
+      var handler = queryHotkeyHandler(kString, el);
 
       if (handler) {
         ret[kString] = handler;
@@ -240,120 +214,50 @@ function getHotkeyMap(el) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* unused harmony export defaultRule */
-/* harmony export (immutable) */ __webpack_exports__["a"] = clickVNode;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony export (immutable) */ __webpack_exports__["b"] = getBackgroundElement;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getEventDispatchOrigin;
+/* harmony export (immutable) */ __webpack_exports__["a"] = createHotkeyDispatcher;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__clickElement__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__hotkeymap__ = __webpack_require__(1);
 // Copyright (c) 2018 Hyun Woo Park
 //
 // This software is released under the MIT License.
 // https://opensource.org/licenses/MIT
 
-var defaultRule = {
-  classRules: {
-    multiselect: function multiselect(el) {
-      return el.focus();
-    },
-    'dropdown-toggle': function dropdownToggle(el) {
-      return el.dispatchEvent(new MouseEvent('mousedown'));
-    }
-  },
-  tagNameRules: {
-    a: function a(el) {
-      return el.click();
-    },
-    button: function button(el) {
-      return el.click();
-    }
-  },
-  vnodeNameRules: {
-    'b-modal': function bModal(v) {
-      return v.show();
-    }
-  }
-  /**
-   * 'click' a node.
-   *
-   * Since many elements have different ways of 'click's, this code got
-   * quite complicated.
-   *
-   * @param {VNode} vnode node to click
-   */
 
-};
-function clickVNode(vnode) {
-  var rule = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultRule;
-  var classRules = rule.classRules,
-      tagNameRules = rule.tagNameRules,
-      vnodeNameRules = rule.vnodeNameRules;
-  var el = vnode.elm; // Vue component-based overrides
+/**
+ * Find the 'background' element. This will be the modal background on
+ * bootstrap.
+ */
 
-  if (vnode.componentOptions) {
-    var vnodeName = vnode.componentOptions.tag;
-
-    if (vnodeNameRules[vnodeName]) {
-      return vnodeNameRules[vnodeName](vnode.context.$children[0]);
-    }
-  } // Sometimes the child of selected element should be clicked.
-  // We assume that such child is at the center of the current element
-  // and check for tagname/classname based rules for such elements.
-
-
-  var targetEl = getElementOnElementCenter(el);
-
-  if (isDescendant(targetEl, el)) {
-    while (targetEl !== null) {
-      // Classname-based overrides
-      var _arr = Object.keys(classRules);
-
-      for (var _i = 0; _i < _arr.length; _i++) {
-        var cssClass = _arr[_i];
-
-        if (targetEl.classList.contains(cssClass)) {
-          var classRule = classRules[cssClass];
-          return classRule(targetEl);
-        }
-      } // Tag name based overrides
-
-
-      var targetTagName = targetEl.tagName.toLowerCase();
-      var nameRule = tagNameRules[targetTagName];
-
-      if (nameRule) {
-        nameRule(targetEl);
-        return;
-      }
-
-      if (targetEl === el) break;
-      targetEl = targetEl.parentElement;
-    }
-  } // Fallback
-
-
-  el.click();
+function getBackgroundElement() {
+  // Support for bootstrap: return currrent modal's container element.
+  var modalDialogs = document.querySelectorAll('.modal.show');
+  if (modalDialogs.length === 1) return modalDialogs[0];
+  return document.body;
 }
+/**
+ * Finds which element should be assumed for the origin of hotkey request.
+ *
+ * @param {HTMLElement?} eventTargetEl: Element the event has been dispatched
+ */
 
-function getElementOnElementCenter(el) {
-  var $el = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(el);
-
-  var _$el$offset = $el.offset(),
-      left = _$el$offset.left,
-      top = _$el$offset.top;
-
-  var width = $el.width();
-  var height = $el.height();
-  return document.elementFromPoint(left + width / 2, top + height / 2);
+function getEventDispatchOrigin(eventTargetEl) {
+  if (eventTargetEl === undefined) eventTargetEl = document.activeElement;
+  if (eventTargetEl && eventTargetEl !== document.body) return eventTargetEl;
+  return getBackgroundElement();
 }
+function createHotkeyDispatcher(kString) {
+  return function (e) {
+    var activeElement = getEventDispatchOrigin(e.target);
+    var matchedHandler = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__hotkeymap__["c" /* queryHotkeyHandler */])(kString, activeElement);
 
-function isDescendant(child, parent) {
-  var el = child;
-
-  while (el) {
-    if (el === parent) return true;
-    el = el.parentElement;
-  }
-
-  return false;
+    if (matchedHandler) {
+      e.stopPropagation();
+      e.preventDefault();
+      return __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__clickElement__["a" /* clickVNode */])(matchedHandler.vnode);
+    }
+  };
 }
 
 /***/ }),
@@ -501,6 +405,7 @@ function unregisterHotkey(el) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = registerHotkeyHandler;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
 /* jslint browser: true */
@@ -694,6 +599,131 @@ function unregisterHotkey(el) {
     };
   });
 })(__WEBPACK_IMPORTED_MODULE_0_jquery___default.a);
+
+function registerHotkeyHandler(kString, f) {
+  __WEBPACK_IMPORTED_MODULE_0_jquery___default()(document).bind('keydown', kString, f);
+}
+
+/***/ }),
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export defaultRule */
+/* harmony export (immutable) */ __webpack_exports__["a"] = clickVNode;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+// Copyright (c) 2018 Hyun Woo Park
+//
+// This software is released under the MIT License.
+// https://opensource.org/licenses/MIT
+
+var defaultRule = {
+  classRules: {
+    multiselect: function multiselect(el) {
+      return el.focus();
+    },
+    'dropdown-toggle': function dropdownToggle(el) {
+      return el.dispatchEvent(new MouseEvent('mousedown'));
+    }
+  },
+  tagNameRules: {
+    a: function a(el) {
+      return el.click();
+    },
+    button: function button(el) {
+      return el.click();
+    }
+  },
+  vnodeNameRules: {
+    'b-modal': function bModal(v) {
+      return v.show();
+    }
+  }
+  /**
+   * 'click' a node.
+   *
+   * Since many elements have different ways of 'click's, this code got
+   * quite complicated.
+   *
+   * @param {VNode} vnode node to click
+   */
+
+};
+function clickVNode(vnode) {
+  var rule = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultRule;
+  var classRules = rule.classRules,
+      tagNameRules = rule.tagNameRules,
+      vnodeNameRules = rule.vnodeNameRules;
+  var el = vnode.elm; // Vue component-based overrides
+
+  if (vnode.componentOptions) {
+    var vnodeName = vnode.componentOptions.tag;
+
+    if (vnodeNameRules[vnodeName]) {
+      return vnodeNameRules[vnodeName](vnode.context.$children[0]);
+    }
+  } // Sometimes the child of selected element should be clicked.
+  // We assume that such child is at the center of the current element
+  // and check for tagname/classname based rules for such elements.
+
+
+  var targetEl = getElementOnElementCenter(el);
+
+  if (isDescendant(targetEl, el)) {
+    while (targetEl !== null) {
+      // Classname-based overrides
+      var _arr = Object.keys(classRules);
+
+      for (var _i = 0; _i < _arr.length; _i++) {
+        var cssClass = _arr[_i];
+
+        if (targetEl.classList.contains(cssClass)) {
+          var classRule = classRules[cssClass];
+          return classRule(targetEl);
+        }
+      } // Tag name based overrides
+
+
+      var targetTagName = targetEl.tagName.toLowerCase();
+      var nameRule = tagNameRules[targetTagName];
+
+      if (nameRule) {
+        nameRule(targetEl);
+        return;
+      }
+
+      if (targetEl === el) break;
+      targetEl = targetEl.parentElement;
+    }
+  } // Fallback
+
+
+  el.click();
+}
+
+function getElementOnElementCenter(el) {
+  var $el = __WEBPACK_IMPORTED_MODULE_0_jquery___default()(el);
+
+  var _$el$offset = $el.offset(),
+      left = _$el$offset.left,
+      top = _$el$offset.top;
+
+  var width = $el.width();
+  var height = $el.height();
+  return document.elementFromPoint(left + width / 2, top + height / 2);
+}
+
+function isDescendant(child, parent) {
+  var el = child;
+
+  while (el) {
+    if (el === parent) return true;
+    el = el.parentElement;
+  }
+
+  return false;
+}
 
 /***/ })
 /******/ ]);

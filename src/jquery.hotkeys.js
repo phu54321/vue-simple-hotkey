@@ -213,3 +213,7 @@ import $ from 'jquery';
     }
   })
 })($)
+
+export function registerHotkeyHandler (kString, f) {
+  $(document).bind('keydown', kString, f)
+}
